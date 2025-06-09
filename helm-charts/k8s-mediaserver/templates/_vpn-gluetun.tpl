@@ -40,7 +40,7 @@ dnsConfig:
 dnsPolicy: None
 {{- end }}
 
-{{ define "vpn-gluetun.openvpnSecret.env }}
+{{ define "vpn-gluetun.openvpnSecret.env" }}
 envFrom:
 - secretRef:
     name: {{ .Values.general.vpn.existingSecret | default "windscribe-openvpn-creds" }}
