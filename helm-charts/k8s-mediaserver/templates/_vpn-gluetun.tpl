@@ -11,10 +11,9 @@ env:
     value: {{ .Values.general.vpn.type }}
   - name: SERVER_REGIONS
     value: {{ .Values.general.vpn.region }}
-  - name: OPENVPN_USER
-    value: {{ .Values.general.vpn.user }}
-  - name: OPENVPN_PASSWORD
-    value: {{ .Values.general.vpn.password }}
+{{- if or (.Values.general.vpn.existingSecret) (.Values.general.vpn.password) }}
+{{ include "vpn-gluetun.openvpnSecret.env" . }}
+{{- end }}
 ports:
   - containerPort: 9091
     protocol: TCP
@@ -39,4 +38,11 @@ dnsConfig:
     - svc.cluster.local
     - cluster.local
 dnsPolicy: None
+{{- end }}
+
+{{ define "vpn-gluetun.openvpnSecret.env }}
+envFrom:
+- secretRef:
+    name: {{ .Values.general.vpn.existingSecret | default "windscribe-openvpn-creds" }}
+
 {{- end }}
