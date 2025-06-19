@@ -46,3 +46,10 @@ envFrom:
     name: {{ .Values.general.vpn.existingSecret | default "windscribe-openvpn-creds" }}
 
 {{- end }}
+
+{{ define "vpn-gluetun.resolv-conf.initContainer" }}
+#- name: resolv-conf-dns
+  #image: busybox
+  #command: [sed, -i, -e, 's/nameservers .*/nameservers 10.255.255.1/', /etc/resolv.conf]
+  #restartPolicy: Always
+{{- end }}
